@@ -15,3 +15,16 @@ http://vertx-eventbus-multi-eventbus.192.168.137.2.nip.io/api/greeting?name=mike
 {"content":"[vertx-eventbus-multi-1-sr2d4][vert.x-eventloop-thread-3] Hello, mike!"}
 {"content":"[vertx-eventbus-multi-1-bm98j][vert.x-eventloop-thread-3] Hello, mike!"}
 ```
+
+Uses health checks, to stop a pod, kube will restart it:
+
+```
+http://vertx-eventbus-multi-eventbus.192.168.137.2.nip.io/api/stop
+```
+
+Readiness and Liveness checks here
+
+```
+http://vertx-eventbus-multi-eventbus.192.168.137.2.nip.io/api/health/readiness
+http://vertx-eventbus-multi-eventbus.192.168.137.2.nip.io/api/health/liveness
+```
