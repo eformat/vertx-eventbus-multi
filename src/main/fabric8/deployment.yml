@@ -1,0 +1,38 @@
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: vertx
+          ports:
+            - name: infinispan
+              containerPort: 8888
+              protocol: TCP
+          env:
+            - name: OPENSHIFT_KUBE_PING_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: JAVA_ARGS
+              value: '-Dvertx.cacheDirBase=/tmp -Dvertx.jgroups.config=default-configs/default-jgroups-kubernetes.xml -Djava.net.preferIPv4Stack=true -cluster'
+          livenessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: "/api/health/liveness"
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreashold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: "/api/health/readiness"
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            successThreashold: 1
+            timeoutSeconds: 1
